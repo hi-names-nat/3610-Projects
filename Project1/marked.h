@@ -1,3 +1,11 @@
+/*******************************
+ * 
+ * Name: marked.h
+ * 
+ * desc: simple class to make showPrimes program simpler.
+ * 
+ **/
+
 class markedInt
 {
 private:

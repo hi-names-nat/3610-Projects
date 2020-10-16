@@ -2,10 +2,15 @@
 #include "avl_tree.h"
 
 static int ALLOWED_IMBALANCE = 1;
-void AVLTree::insert(const int key, BinaryNode *passedLoc)
+void AVLTree::insert(const int key, BinaryNode *&passedLoc)
 {
+
+
   if (passedLoc == NULL)
+  {
     passedLoc = new BinaryNode(key);
+    passedLoc->nodeKey = key;
+  }
   else if (key < passedLoc->nodeKey)
     insert(key, passedLoc->left);
   else if (key > passedLoc->nodeKey)
@@ -14,25 +19,29 @@ void AVLTree::insert(const int key, BinaryNode *passedLoc)
   Balance(root);
 }
 
-void AVLTree::remove(const int key, BinaryNode *passedLoc) {
-  if (passedLoc == NULL) {
+void AVLTree::remove(const int key, BinaryNode *passedLoc)
+{
+  if (passedLoc == NULL)
+  {
     return;
   }
-  if (key < passedLoc -> nodeKey) {
-    remove(key, passedLoc -> left);
-  }
-  else if (passedLoc -> nodeKey < key)
+  if (key < passedLoc->nodeKey)
   {
-    remove(key, passedLoc -> right);
+    remove(key, passedLoc->left);
   }
-  else if (passedLoc -> left != nullptr && passedLoc -> right != nullptr)
+  else if (passedLoc->nodeKey < key)
   {
-    passedLoc -> nodeKey = minNode(passedLoc -> right) -> nodeKey;
-    remove (passedLoc ->nodeKey, passedLoc -> right);
+    remove(key, passedLoc->right);
   }
-  else {
+  else if (passedLoc->left != nullptr && passedLoc->right != nullptr)
+  {
+    passedLoc->nodeKey = minNode(passedLoc->right)->nodeKey;
+    remove(passedLoc->nodeKey, passedLoc->right);
+  }
+  else
+  {
     BinaryNode *old = passedLoc;
-    passedLoc = (passedLoc -> left != nullptr) ? passedLoc -> left : passedLoc -> right;
+    passedLoc = (passedLoc->left != nullptr) ? passedLoc->left : passedLoc->right;
     delete old;
   }
   Balance(passedLoc);
@@ -92,4 +101,34 @@ void AVLTree::rotateWithRightChild(BinaryNode *&target)
 
   //move to root
   target = temp;
-} 
+}
+
+void AVLTree::getInOrder(BinaryNode *node)
+{
+  if (node == NULL)
+    return;
+
+  //recur on left
+  getInOrder(node->left);
+
+  //print data
+  std::cout << node->nodeKey << '\n';
+
+  //recur on right
+  getInOrder(node->right);
+}
+
+void AVLTree::getHeightInOrder(BinaryNode *node)
+{
+  if (node == NULL)
+    return;
+
+  //recur on left
+  getInOrder(node->left);
+
+  //print data
+  std::cout << node->nodeHeight << '\n';
+
+  //recur on right
+  getInOrder(node->right);
+}

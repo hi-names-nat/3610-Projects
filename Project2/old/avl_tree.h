@@ -3,7 +3,12 @@
 
 struct BinaryNode
 {
-  BinaryNode(const int key) : nodeHeight(nodeHeight), left(NULL), right(NULL) {}
+  BinaryNode(const int key){
+    nodeKey = key;
+    nodeHeight = -1;
+    left = NULL;
+    right = NULL;
+  }
 
   ~BinaryNode()
   {
@@ -21,21 +26,35 @@ class AVLTree
 {
 
 public:
+  BinaryNode *root;
+
   AVLTree() : root(NULL) {}
   ~AVLTree()
   {
     delete root;
   }
 
-  void insert(const int key, BinaryNode *passedLoc);
+  //insertion, removal
+  void insert(const int key, BinaryNode *&passedLoc);
   void remove(const int key, BinaryNode *passedLoc);
 
+  void insert(const int key) {
+    insert(key, root);
+  };
+
+  void remove(const int key) {
+    remove(key, root);
+  };
+
+  //getters
+  void getInOrder(BinaryNode *node);
+  void getHeightInOrder(BinaryNode *node);
   int getHeightAt(BinaryNode *node) const
   {
     return node == nullptr ? -1 : node->nodeHeight;
   }
 
-  BinaryNode *root;
+  
 
 private:
   void Balance(BinaryNode *&balancepoint);
@@ -59,9 +78,20 @@ private:
   {
     BinaryNode *current = node;
 
-    /* loop down to find the leftmost leaf */
+    //loop down to find the leftmost leaf
     while (current->left != NULL)
       current = current->left;
+
+    return current;
+  }
+
+  BinaryNode *maxNode(BinaryNode *node)
+  {
+    BinaryNode *current = node;
+
+    //loop down to find the rightmost leaf 
+    while (current -> right != NULL)
+      current = current -> right;
 
     return current;
   }

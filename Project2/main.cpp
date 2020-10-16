@@ -8,23 +8,23 @@ int main(int argc, char** argv) {
 
   char option;
   int key;
-
+  std:: cout << "please enter commands ONE AT A TIME\n";
   do {
     cin >> option;
     switch(option) {
       case 'i':
         cin >> key;
-        // tree.insert(key);
+        tree.insert(key);
         break;
       case 'r':
         cin >> key;
-        // tree.remove(key);
+        tree.delNode(key);
         break;
       case 'h':
-        // tree.print('h');
+        tree.printHeight();
         break;
       case 'p':
-        // tree.print('p');
+        tree.printKey();
         break;
       default:
         break;
